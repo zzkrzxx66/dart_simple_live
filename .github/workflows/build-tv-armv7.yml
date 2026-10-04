@@ -33,18 +33,18 @@ jobs:
       - name: Restore packages
         run: flutter pub get
       - name: Build ARMv7 TV APK
-        run: flutter build apk --release --target-platform android-arm
+        run: flutter build apk --release --target-platform android-arm --split-per-abi
       - name: Verify APK signature
         run: |
           SDK_BUILD_TOOLS=$(find "$ANDROID_HOME/build-tools" -mindepth 1 -maxdepth 1 -type d | sort -V | tail -1)
-          "$SDK_BUILD_TOOLS/apksigner" verify --verbose build/app/outputs/flutter-apk/app-release.apk
-          sha256sum build/app/outputs/flutter-apk/app-release.apk > build/app/outputs/flutter-apk/SHA256SUMS.txt
+          "$SDK_BUILD_TOOLS/apksigner" verify --verbose build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+          sha256sum build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk > build/app/outputs/flutter-apk/SHA256SUMS.txt
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: Simple-Live-TV-ARMv7-APK
           path: |
-            simple_live_tv_app/build/app/outputs/flutter-apk/app-release.apk
+            simple_live_tv_app/build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
             simple_live_tv_app/build/app/outputs/flutter-apk/SHA256SUMS.txt
           if-no-files-found: error
           retention-days: 90
